@@ -2,6 +2,11 @@
 import streamlit as st
 import pickle
 import numpy as np
+from sklearn.preprocessing import LabelEncoder
+
+# Encoder
+label_encoder = LabelEncoder()
+label_encoder.classes_ = np.array(["Negatif", "Netral", "Positif"])
 
 # Load models and vectorizer
 with open("svm_model.pkl", "rb") as f:
@@ -32,8 +37,9 @@ if st.button("🚀 Prediksi Sentimen"):
             prediction = svm_model.predict(vec)[0]
         else:
             prediction = xgb_model.predict(vec)[0]
-
-        st.success(f"💡 Hasil Prediksi Sentimen: **{prediction.upper()}**")
+            
+        label = label_encoder.inverse_transform([prediction])[0]
+        st.success(f"💡 Hasil Prediksi Sentimen: **{label.upper()}**")
 
 # Footer
 st.markdown("---")
