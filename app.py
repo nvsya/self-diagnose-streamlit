@@ -6,7 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 
 # Encoder
 label_encoder = LabelEncoder()
-label_encoder.classes_ = np.array(["Negatif", "Netral", "Positif"])
+label_encoder.classes_ = np.array(["Negative", "Neutral", "Positive"])
 
 # Load models and vectorizer
 with open("svm_model.pkl", "rb") as f:
@@ -18,19 +18,19 @@ with open("tfidf_vectorizer.pkl", "rb") as f:
 
 # UI Setup
 st.set_page_config(page_title="Self-Diagnose Sentiment Analyzer", layout="centered")
-st.markdown("## 🧠 Analisis Sentimen Komentar TikTok")
-st.markdown("Prediksi kecenderungan self-diagnose berdasarkan komentar terkait kesehatan mental.")
+st.markdown("## 🧠 TikTok Comment Sentiment Analysis")
+st.markdown("Prediction of self-diagnosis tendencies based on mental health-related comments")
 
 # User input
-user_input = st.text_area("📝 Masukkan komentar TikTok di bawah ini:")
+user_input = st.text_area("📝 Enter your TikTok comments below:")
 
 # Model selector
-model_choice = st.radio("🔍 Pilih Algoritma:", ["Support Vector Machine (SVM)", "Extreme Gradient Boosting (XGBoost)"])
+model_choice = st.radio("🔍 Select Algorithm:", ["Support Vector Machine (SVM)", "Extreme Gradient Boosting (XGBoost)"])
 
 # Predict button
-if st.button("🚀 Prediksi Sentimen"):
+if st.button("🚀 Sentiment Prediction"):
     if user_input.strip() == "":
-        st.warning("Harap masukkan komentar terlebih dahulu.")
+        st.warning("Please enter a comment first.")
     else:
         vec = vectorizer.transform([user_input])
         if model_choice == "Support Vector Machine (SVM)":
@@ -39,8 +39,8 @@ if st.button("🚀 Prediksi Sentimen"):
             prediction = xgb_model.predict(vec)[0]
             
         label = label_encoder.inverse_transform([prediction])[0]
-        st.success(f"💡 Hasil Prediksi Sentimen: **{label.upper()}**")
+        st.success(f"💡 Sentiment Prediction Results: **{label.upper()}**")
 
 # Footer
 st.markdown("---")
-st.markdown("Dibuat untuk keperluan skripsi oleh Navsya Nitisara 🌸")
+st.markdown("Created for thesis purposes by Navsya Nitisara 🌸")
